@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -16,12 +17,12 @@ public class JwtUtil {
     private long expiration = 1000 * 60 * 60; //토큰 유효시간(1시간)
 
     private Map<String, Object> getUserInfo(){
-        return Map.of(
-            "name", "korean hong",
-            "age", 31,
-            "sex" , "M",
-            "hasGirlfriend" , "Y"
-        );
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("name", "korean hong");
+        userInfo.put("age", 31);
+        userInfo.put("sex", "M");
+        userInfo.put("hasGirlfriend", "Y");
+        return userInfo;
     }
 
     public String generateToken(String username){
