@@ -4,7 +4,6 @@ import com.hkhong.study.dto.UserDto;
 import com.hkhong.study.service.AuthService;
 import com.hkhong.study.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -37,17 +36,17 @@ public class AuthController {
         try {
 
             // 1. 로그인 요청 (username과 password)
-            String username = userDto.getUserName();
+            String username = userDto.getId();
             String password = userDto.getPassword();
 
             // 2. UsernamePasswordAuthenticationToken 생성
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDto.getUserName(), userDto.getPassword());
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDto.getId(), userDto.getPassword());
 
             // 3. AuthenticationManager 호출
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
             // 4. UserDetailsService 호출 하여 UserDetailsService가 사용자의 UserDetails 정보 호출
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userDto.getUserName());
+            UserDetails userDetails = userDetailsService.loadUserByUsername(userDto.getId());
 
             // 5. UserDetails 확인 하여 UserDetails의 정보와 입력한 정보가 일치하는지 확인
             if (userDetails != null && passwordEncoder.matches(userDto.getPassword(), userDetails.getPassword())){
@@ -57,14 +56,14 @@ public class AuthController {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
                 // JWT 토큰 생성 및 반환
-                String jwtToken = jwtUtil.generateToken(userDto.getUserName());
+                String jwtToken = jwtUtil.generateToken(userDto.getId());
                 return ResponseEntity.ok(jwtToken);
             }else {
                 throw new BadCredentialsException("Invalid User");
             }
 
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Invalid credentials");
+            throw new RuntimeException("Invalid Authentication Information");
         }
     }
 }
