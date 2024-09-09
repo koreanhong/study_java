@@ -35,6 +35,7 @@ public class JwtUtil {
                 .compact();// 토큰 생성
     }
 
+
     // 토큰에서 사용자 이름 추출
     public String extractUsername(String token) {
         return extractClaims(token).getSubject(); // 클레임에서 사용자 이름 추출

@@ -27,7 +27,7 @@ public class AuthService implements UserDetailsService {
         if ("hkhong".equals(username)) {
             return User
                     .withUsername("hkhong")
-                    .password(passwordEncoder.encode("password"))
+                    .password(passwordEncoder.encode("hkhong2024!"))
                     .roles("USER")
                     .build();
         } else {
