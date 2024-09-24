@@ -1,8 +1,8 @@
 package com.hkhong.study.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.hkhong.study.global.exception.CustomException;
+import com.hkhong.study.global.exception.ErrorCode;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +45,6 @@ public class JwtUtil {
     public Claims extractClaims(String token){
         return Jwts.parser()
                 .setSigningKey(secretKey)
-//                .parseClaimsJwt(token)
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -56,8 +55,8 @@ public class JwtUtil {
     }
 
     //토큰 유효성 검증
-    public boolean validateToken(String token, String username){
-        return (username.equals(extractUsername(token)) && !isTokenExpired(token));
+    public boolean validateToken(String token){
+        return !isTokenExpired(token);
     }
 
 }
